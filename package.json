@@ -1,0 +1,26 @@
+{
+    "name": "codec-iasus",
+    "version": "0.0.1",
+    "description": "a basic JSON codec with RDF support",
+    "scripts": {
+        "build": "tsc --pretty -p .",
+        "test": "vitest run",
+        "test:cov": "vitest run --coverage",
+        "pub": "pnpm compile && pnpm test && pnpm publish --access=public"
+    },
+    "keywords": [],
+    "author": "Benji Stephenson",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/benjstephenson/codec-iasus"
+    },
+    "license": "ISC",
+    "main": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
+    "devDependencies": {
+        "mismatched": "^3.1.0",
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.5",
+        "vitest": "^1.6.0"
+    }
+}

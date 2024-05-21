@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "esnext",
+            "dom"
+        ],
+        "target": "es6",
+        "module": "commonjs",
+        "rootDir": ".",
+        "outDir": "./dist",
+        "moduleResolution": "node",
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "forceConsistentCasingInFileNames": true,
+        "strictNullChecks": true,
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "declaration": true,
+        "skipLibCheck": true,
+        "types": [
+            "vitest/importMeta",
+            "vitest/globals"
+        ]
+    },
+    "exclude": [
+        "vitest.config.ts"
+    ],
+    "include": [
+        "./src"
+    ]
+}

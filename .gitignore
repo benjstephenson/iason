@@ -1,0 +1,42 @@
+# See https://www.gitignore.io
+
+## Directory-based project format:
+.idea/
+# if you remove the above rule, at least ignore the following:
+
+# User-specific stuff:
+**/.idea
+
+# Javascript Client
+node_modules/
+bower_components/
+jspm_packages/
+dist/
+typings/
+mysql/**/data/
+postgres/**/data/
+src/environment/
+
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#Diff file
+*.orig
+
+# files ending in .cache can be ignored
+*.[Cc]ache
+# but keep track of directories ending in .cache
+!*.[Cc]ache/
+
+# Others
+node_modules/
+
+# Auto-generated code coverage report
+TestResult.xml
+coverage
+.nyc_output
+
+# Docker compose mounts
+volume/
+.tool-versions

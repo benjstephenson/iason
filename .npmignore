@@ -1,0 +1,7 @@
+src/**/*.test.ts
+dist/src/**/*.test.*
+vitest*
+tsconfig*
+.prettier*
+TestResult*
+coverage/
