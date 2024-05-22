@@ -6,7 +6,7 @@
         "build": "tsc --pretty -p .",
         "test": "vitest run",
         "test:cov": "vitest run --coverage",
-        "pub": "pnpm compile && pnpm test && pnpm publish --access=public"
+        "pub": "pnpm build && pnpm test && pnpm publish --access=public"
     },
     "keywords": [],
     "author": "Benji Stephenson",
