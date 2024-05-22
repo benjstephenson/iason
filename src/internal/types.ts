@@ -2,7 +2,6 @@ import { Codec } from "./Codec"
 
 export type Simplify<A> = { [K in keyof A]: A[K] } extends infer B ? B : never
 
-
 export type EncodableObject = Record<string, Codec<any, any>>
 export type CodecFor<In extends Record<string, any>> = { [k in keyof In]: Codec<In[k], any> }
 export type GetSourceType<In extends EncodableObject> = {

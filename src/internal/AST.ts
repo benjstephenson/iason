@@ -89,8 +89,14 @@ export const ClassKind = <T extends new (...args: any[]) => any>(encode: (c: Ins
     encode
 })
 
+export interface PassThrough {
+    readonly _type: "passthrough"
+}
+
+export const PassThrough: PassThrough = { _type: "passthrough" }
+
 export type AST =
-    DateKind
+    | DateKind
     | StringKind
     | BooleanKind
     | NumberKind
@@ -99,3 +105,4 @@ export type AST =
     | ObjectKind
     | ClassKind
     | Transform
+    | PassThrough

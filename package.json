@@ -1,5 +1,5 @@
 {
-    "name": "codec-iasus",
+    "name": "iason",
     "version": "0.0.1",
     "description": "a basic JSON codec with RDF support",
     "scripts": {
@@ -12,7 +12,7 @@
     "author": "Benji Stephenson",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/benjstephenson/codec-iasus"
+        "url": "git+https://github.com/benjstephenson/iason"
     },
     "license": "ISC",
     "main": "dist/src/index.js",

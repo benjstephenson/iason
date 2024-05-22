@@ -21,17 +21,17 @@ describe("Encoding", () => {
     }
 
     const forType = A.forType<typeof person>()({
-        name: A.string,
+        name: A.string(),
         dob: A.date,
         address: A.object({
-            id: A.string,
-            lines: A.object({ one: A.string }),
-            type: A.string
+            id: A.string(),
+            lines: A.object({ one: A.string() }),
+            type: A.string()
         })
     })
 
     it("primitives", () => {
-        assertThat(toJsonLd(A.string)("hello")).is("hello")
+        assertThat(toJsonLd(A.string())("hello")).is("hello")
         assertThat(toJsonLd(A.boolean)(true)).is(true)
         assertThat(toJsonLd(A.boolean)(false)).is(false)
         assertThat(toJsonLd(A.forNull)(null)).is(null)
@@ -40,20 +40,19 @@ describe("Encoding", () => {
     })
 
     it("custom class", () => {
-
-
         const codec = A.forClass(MyName, a => a.name)
         assertThat(toJsonLd(codec)(new MyName("Ada Lovelace"))).is("Ada Lovelace")
     })
 
     it("arrays", () => {
-        assertThat(toJsonLd(A.array(A.string))(["hello", "world"])).is(["hello", "world"])
+        assertThat(toJsonLd(A.array(A.string()))(["hello", "world"])).is(["hello", "world"])
 
         const codec = A.array(forType)
         const jsonLd = toJsonLd(codec)([person, person])
         assertThat(jsonLd).is([
             {
-                name: "Bob", dob: person.dob.toISOString(),
+                name: "Bob",
+                dob: person.dob.toISOString(),
                 address: {
                     id: "abc",
                     lines: { one: "123 Test Street" },
@@ -61,7 +60,8 @@ describe("Encoding", () => {
                 }
             },
             {
-                name: "Bob", dob: person.dob.toISOString(),
+                name: "Bob",
+                dob: person.dob.toISOString(),
                 address: {
                     id: "abc",
                     lines: { one: "123 Test Street" },
@@ -70,58 +70,75 @@ describe("Encoding", () => {
             }
         ])
     })
+
     it("forType generates the same AST as object", () => {
         const forType = A.forType<typeof person>()({
-            name: A.string,
+            name: A.string(),
             dob: A.date,
             address: A.object({
-                id: A.string,
-                lines: A.object({ one: A.string }),
-                type: A.string
+                id: A.string(),
+                lines: A.object({ one: A.string() }),
+                type: A.string()
             })
         })
 
         const obj = A.object({
-            name: A.string,
+            name: A.string(),
             dob: A.date,
             address: A.object({
-                id: A.string,
-                lines: A.object({ one: A.string }),
-                type: A.string
+                id: A.string(),
+                lines: A.object({ one: A.string() }),
+                type: A.string()
             })
         })
 
         assertThat(forType.ast).is(obj.ast)
     })
 
+    it("passthrough", () => {
+        const forType = A.forType<typeof person>()({
+            name: A.string(),
+            dob: A.date,
+            address: A.pass<(typeof person)["address"]>()
+        })
+
+        assertThat(toJsonLd(forType)(person)).is({
+            name: "Bob",
+            dob: person.dob.toISOString(),
+            address: {
+                id: "abc",
+                lines: { one: "123 Test Street" },
+                type: "home"
+            }
+        })
+    })
+
     it("an object", () => {
-        type PersonWithNumbers = Omit<typeof person, "name"> & { name: MyName, phone: string[] }
+        type PersonWithNumbers = Omit<typeof person, "name"> & { name: MyName; phone: string[] }
         const a = A.forType<PersonWithNumbers>()({
             name: A.forClass(MyName, n => n.name),
             dob: A.date,
-            phone: A.array(A.string),
+            phone: A.array(A.string()),
             address: A.object({
-                id: A.string,
-                lines: A.object({ one: A.string }),
-                type: A.string
+                id: A.string(),
+                lines: A.object({ one: A.string() }),
+                type: A.string()
             })
                 .with(R.atType("https://www.schema.org/PostalAddress"))
                 .with(R.atId("foo"))
         })
             .with(R.atType("https://www.schema.org/Person"))
-            .with(R.atId(p => `https://www.schema.org/${encodeURI(p.name)}` ))
+            .with(R.atId(p => `https://www.schema.org/${encodeURI(p.name)}`))
 
-        assertThat(toJsonLd(a)({
-            ...person,
-            name: new MyName("Bob Bobbington"),
-            phone: [
-                "07707717711", "0220382193"
-            ]
-        })).is({
+        assertThat(
+            toJsonLd(a)({
+                ...person,
+                name: new MyName("Bob Bobbington"),
+                phone: ["07707717711", "0220382193"]
+            })
+        ).is({
             name: "Bob Bobbington",
-            phone: [
-                "07707717711", "0220382193"
-            ],
+            phone: ["07707717711", "0220382193"],
             dob: person.dob.toISOString(),
             address: {
                 id: "abc",
@@ -131,8 +148,7 @@ describe("Encoding", () => {
                 "@id": "foo"
             },
             "@type": "https://www.schema.org/Person",
-            "@id": "https://www.schema.org/Bob%20Bobbington",
+            "@id": "https://www.schema.org/Bob%20Bobbington"
         })
     })
-
 })

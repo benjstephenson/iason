@@ -57,7 +57,7 @@ export const toJsonLd = <C extends Codec<any, any>>(
                 return (input: any, field) => ast.encode(work(ast.source)(input, field))
 
             case "iterable-kind":
-                return (input: any, fieldName ) => {
+                return (input: any, _) => {
                     if (!Array.isArray(input)) throw new Error(`Expected an array but got ${typeof input}`)
 
                     const out: any[] = []
@@ -66,14 +66,17 @@ export const toJsonLd = <C extends Codec<any, any>>(
                         out.push(encoded)
                     }
                     return out
-
                 }
+
+            case "passthrough":
+                return (input, _) => input
+
             default:
                 return UnreachableCase(ast)
         }
     }
 
-    return (input) => {
+    return input => {
         const result = work(codec.ast)(input)
 
         const applyContext = (out: object) => {
